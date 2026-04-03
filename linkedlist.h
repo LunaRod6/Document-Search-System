@@ -26,6 +26,8 @@ public:
     // Print all elements
     void display() const;
 
+    T getFront() const;
+
     // Returns the current size
     int size() const { return currentSize; }
 
@@ -86,6 +88,16 @@ void LinkedList<T>::display() const {
         curr = curr->next;
     }
     std::cout << "nullptr" << std::endl;
+}
+
+template<typename T>
+T LinkedList<T>::getFront() const {
+
+    if (head == nullptr) {
+        return T();
+    }
+    return head->data;
+
 }
 
 template<typename T>
