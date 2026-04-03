@@ -1,5 +1,5 @@
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
 
 template <typename T>
 class LinkedList {
@@ -12,13 +12,16 @@ private:
     };
 
     Node* head;
+    Node* tail;
     int currentSize;
 
 public:
-    LinkedList() : head(nullptr), currentSize(0) {}
+    LinkedList() : head(nullptr), tail(nullptr), currentSize(0) {}
 
     // Add a node to the front
     void insertFront(T val);
+
+    void insertBack(T val);
 
     // Removes the first occurrence of a value
     bool remove(T val);
@@ -30,6 +33,7 @@ public:
 
     // Returns the current size
     int size() const { return currentSize; }
+
 
     // Destructor
     ~LinkedList();
@@ -44,6 +48,23 @@ void LinkedList<T>::insertFront(T val) {
 
     head = newNode;
 
+    if (currentSize == 0) {
+        tail = newNode;
+    }
+    currentSize++;
+}
+
+template <typename T>
+void LinkedList<T>::insertBack(T val) {
+    
+    Node* newNode = new Node(val);
+
+    if (head == nullptr) {
+        head = tail = newNode;
+    } else {
+        tail->next = newNode;
+        tail = newNode;
+    }
     currentSize++;
 }
 
@@ -66,6 +87,12 @@ bool LinkedList<T>::remove(T val) {
     while(curr) {
         if (curr->data == val) {
             prev->next = curr->next;
+
+            //If the node is a tail
+            if (curr == tail) {
+                tail = prev;
+            }
+
             delete curr;
             currentSize--;
             return true;
