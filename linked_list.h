@@ -44,6 +44,9 @@ public:
 
     // Destructor
     ~LinkedList();
+
+    // Sorting Algorithms
+    void insertionSort();
 };
 
 template <typename T>
@@ -210,4 +213,37 @@ LinkedList<T>::~LinkedList() {
 
 }
 
+template <typename T>
+void LinkedList<T>::insertionSort() {
+    if (head == nullptr || head->next == nullptr) return;
+
+    Node* sortedHead = nullptr;
+    Node* curr = head;
+
+    while (curr) {
+        Node* nextNode = curr->next;
+
+        if (sortedHead == nullptr || sortedHead->data >= curr->data) {
+            curr->next = sortedHead;
+            sortedHead = curr;
+        } else {
+            Node* temp = sortedHead;
+
+            while (temp->next && temp->next->data < curr->data) {
+                temp = temp->next;
+            }
+            curr->next = temp->next;
+            temp->next = curr;
+        }
+        curr = nextNode;
+    }
+
+    head = sortedHead;
+
+    Node* temp = head;
+    while (temp && temp->next) {
+        temp = temp->next;
+    }
+    tail = temp;
+}
 #endif
