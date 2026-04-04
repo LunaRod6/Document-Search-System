@@ -36,7 +36,7 @@ public:
     // Returns the current size
     int size() const { return currentSize; }
 
-    //Copy Constructor
+    // Copy Constructor
     LinkedList(const LinkedList<T>& other);
 
     //Copy Assignment Operator
@@ -47,6 +47,15 @@ public:
 
     // Sorting Algorithms
     void insertionSort();
+
+    void mergeSort();
+
+    Node* getMiddle(Node* headNode);
+
+    Node* merge(Node* left, Node* right);
+
+    Node* mergeSortRec(Node* headNode);
+
 };
 
 template <typename T>
@@ -78,7 +87,7 @@ void LinkedList<T>::insertBack(T val) {
     currentSize++;
 }
 
-template<typename T>
+template <typename T>
 bool LinkedList<T>::remove(T val) {
 
     if (head == nullptr) return false;
@@ -120,7 +129,7 @@ bool LinkedList<T>::remove(T val) {
     return false;
 }
 
-template<typename T>
+template <typename T>
 void LinkedList<T>::display() const {
 
     Node* curr = head;
@@ -132,7 +141,7 @@ void LinkedList<T>::display() const {
     std::cout << "nullptr" << std::endl;
 }
 
-template<typename T>
+template <typename T>
 T LinkedList<T>::getFront() const {
 
     if (head == nullptr) {
@@ -142,7 +151,7 @@ T LinkedList<T>::getFront() const {
 
 }
 
-template<typename T>
+template <typename T>
 void LinkedList<T>::popFront() {
     if (head == nullptr) return;
 
@@ -157,7 +166,7 @@ void LinkedList<T>::popFront() {
     currentSize--;
 }
 
-template<typename T>
+template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& other) : head(nullptr), tail(nullptr), currentSize(0) {
     Node* curr = other.head;
     while (curr) {
@@ -167,7 +176,7 @@ LinkedList<T>::LinkedList(const LinkedList<T>& other) : head(nullptr), tail(null
     }
 }
 
-template<typename T>
+template <typename T>
 LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other) {
     if (this == &other) {
         return *this;
@@ -195,7 +204,7 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other) {
 
 }
 
-template<typename T>
+template <typename T>
 LinkedList<T>::~LinkedList() {
     
     Node* curr = head;
@@ -246,4 +255,64 @@ void LinkedList<T>::insertionSort() {
     }
     tail = temp;
 }
+
+template <typename T>
+void LinkedList<T>::mergeSort() {
+    if (!head || !head->next) return;
+
+    head = mergeSortRec(head);
+
+    Node* temp = head;
+    while (temp && temp->next) {
+        temp = temp->next;
+    }
+    tail = temp;
+
+}
+
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::getMiddle(Node* headNode) {
+    if (!headNode) return headNode;
+
+    Node* slow = headNode;
+    Node* fast = headNode->next;
+
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::merge(Node* left, Node* right) {
+    if (!left) return right;
+    if (!right) return left;
+
+    Node* result = nullptr;
+
+    if (left->data <= right->data) {
+        result = left;
+        result->next = merge(left->next, right);
+    } else {
+        result = right;
+        result->next = merge(left, right->next);
+    }
+    return result;
+} 
+
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::mergeSortRec(Node* headNode) {
+    if (!headNode || !headNode->next) return headNode;
+
+    Node* mid = getMiddle(headNode);
+    Node* nextToMid = mid->next;
+    mid->next = nullptr; 
+    
+    Node* left = mergeSortRec(headNode);
+    Node* right = mergeSortRec(nextToMid);
+
+    return merge(left, right);
+}
+
 #endif
