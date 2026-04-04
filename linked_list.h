@@ -34,6 +34,11 @@ public:
     // Returns the current size
     int size() const { return currentSize; }
 
+    //Copy Constructor
+    LinkedList(const LinkedList<T>& other);
+
+    //Copy Assignment Operator
+    LinkedList<T>& operator=(const LinkedList<T>& other);
 
     // Destructor
     ~LinkedList();
@@ -128,11 +133,49 @@ T LinkedList<T>::getFront() const {
 }
 
 template<typename T>
+LinkedList<T>::LinkedList(const LinkedList<T>& other) : head(nullptr), tail(nullptr), currentSize(0) {
+    Node* curr = other.head;
+    while (curr) {
+        //Reusing the insertBack function
+        this->insertBack(curr->data);
+        curr = curr->next;
+    }
+}
+
+template<typename T>
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    //Clears the target list
+    Node* curr = head;
+    while (curr) {
+        Node* nextNode = curr->next;
+        delete curr;
+        curr = nextNode;
+    }
+
+    head = tail = nullptr;
+    currentSize = 0;
+
+    //Copies other's node by node to the empty list
+    Node* otherCurr = other.head;
+    while (otherCurr) {
+        this->insertBack(otherCurr->data);
+        otherCurr = otherCurr->next;
+    }
+
+    return *this;
+
+}
+
+template<typename T>
 LinkedList<T>::~LinkedList() {
     
     Node* curr = head;
 
-    while(curr) {
+    while (curr) {
         Node* nextNode = curr->next;
 
         delete curr;
