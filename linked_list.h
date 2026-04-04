@@ -31,6 +31,8 @@ public:
 
     T getFront() const;
 
+    void popFront();
+
     // Returns the current size
     int size() const { return currentSize; }
 
@@ -81,6 +83,11 @@ bool LinkedList<T>::remove(T val) {
     if (head->data == val) {
         Node* temp = head;
         head = head->next;
+
+        if (head == nullptr) {
+            tail = nullptr;
+        }
+
         delete temp;
         currentSize--;
         return true;
@@ -130,6 +137,21 @@ T LinkedList<T>::getFront() const {
     }
     return head->data;
 
+}
+
+template<typename T>
+void LinkedList<T>::popFront() {
+    if (head == nullptr) return;
+
+    Node* temp = head;
+    head = head->next;
+
+    if (head == nullptr) {
+        tail = nullptr;
+    }
+
+    delete temp;
+    currentSize--;
 }
 
 template<typename T>
@@ -183,7 +205,7 @@ LinkedList<T>::~LinkedList() {
         curr = nextNode;
     }
 
-    head = nullptr;
+    head = tail = nullptr;
     currentSize = 0;
 
 }
