@@ -16,10 +16,47 @@ private:
 
     Node* root;
 
+    // Helper to the destructor
+    void destroyTree(Node* node) {
+        if (node) {
+            destroyTree(node->left);
+            destroyTree(node->right);
+            delete node;
+        }
+    }
+
+    // Helper to the Copy Map
+    Node* copyTree(Node* otherNode) {
+        if (!otherNode) return nullptr;
+
+        Node* newNode = new Node(otherNode->key, otherNode->value);
+
+        newNode->left = copyTree(otherNode->left);
+        newNode->right = copyTree(otherNode->right);
+
+        return newNode;
+    }
+
     Node* insertRec(Node* node, const K& key, int docID);
 
 public:
     BSTMap() : root(nullptr) {}
+
+    ~BSTMap() {
+        destroyTree(root);
+    }
+
+    BSTMap(const BSTMap& other) {
+        root = copyTree(other.root);
+    }
+
+    BSTMap& operator=(const BSTMap& other) {
+        if (this != &other) {
+            destroyTree(root);
+            root = copyTree(other.root);
+        }
+        return *this;
+    }
 
     void insertNode(const K& key, const int& docID);
     V* findNode(const K& key);
