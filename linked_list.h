@@ -15,6 +15,12 @@ private:
     Node* tail;
     int currentSize;
 
+    Node* getMiddle(Node* headNode);
+
+    Node* merge(Node* left, Node* right);
+
+    Node* mergeSortRec(Node* headNode);
+
 public:
     LinkedList() : head(nullptr), tail(nullptr), currentSize(0) {}
 
@@ -49,12 +55,6 @@ public:
     void insertionSort();
 
     void mergeSort();
-
-    Node* getMiddle(Node* headNode);
-
-    Node* merge(Node* left, Node* right);
-
-    Node* mergeSortRec(Node* headNode);
 
     Node* linearSearch(Node* head, T val);
 
