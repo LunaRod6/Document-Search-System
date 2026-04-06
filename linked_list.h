@@ -56,6 +56,8 @@ public:
 
     Node* mergeSortRec(Node* headNode);
 
+    Node* linearSearch(Node* head, T val);
+
 };
 
 template <typename T>
@@ -313,6 +315,20 @@ typename LinkedList<T>::Node* LinkedList<T>::mergeSortRec(Node* headNode) {
     Node* right = mergeSortRec(nextToMid);
 
     return merge(left, right);
+}
+
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::linearSearch(Node* head, T val) {
+
+    Node* curr = head;
+
+    while (curr) {
+        if (curr->data == val) return curr;
+        curr = curr->next;
+    }
+
+    return nullptr;
+    
 }
 
 #endif
