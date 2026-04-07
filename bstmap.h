@@ -5,13 +5,14 @@
 
 template <typename K, typename V>
 class BSTMap {
-private:
+protected:
     struct Node {
         K key;
         V value;
         Node *left, *right;
+        int height;
 
-        Node(K k, V v) : key(k), value(v), left(nullptr), right(nullptr) {}
+        Node(K k, V v) : key(k), value(v), left(nullptr), right(nullptr), height(1) {}
     };
 
     Node* root;
@@ -37,12 +38,12 @@ private:
         return newNode;
     }
 
-    Node* insertRec(Node* node, const K& key, int docID);
+    virtual Node* insertRec(Node* node, const K& key, int docID);
 
 public:
     BSTMap() : root(nullptr) {}
 
-    ~BSTMap() {
+    virtual ~BSTMap() {
         destroyTree(root);
     }
 
