@@ -58,6 +58,8 @@ public:
 
     Node* linearSearch(Node* head, T val);
 
+    Node* getHead() const { return head; }
+
 };
 
 template <typename T>

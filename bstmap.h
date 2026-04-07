@@ -58,12 +58,12 @@ public:
         return *this;
     }
 
-    void insertNode(const K& key, const int& docID);
+    void insertNode(const K& key, int docID);
     V* findNode(const K& key);
 };
 
 template <typename K, typename V>
-void BSTMap<K, V>::insertNode(const K& key, const int& docID) {
+void BSTMap<K, V>::insertNode(const K& key, int docID) {
     root = insertRec(root, key, docID);
 }
 
